@@ -13,8 +13,6 @@
         {
             Name = string.Empty;    //set empty string instead of null
             Grades = new Dictionary<int, double>();
-
-
         }
 
     }
