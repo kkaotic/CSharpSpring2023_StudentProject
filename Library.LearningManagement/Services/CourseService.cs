@@ -10,7 +10,6 @@ namespace Library.LearningManagement.Services
     public class CourseService
     {
         public List<Course> courseList;
-
         private static CourseService? _instance;
 
         public static CourseService Current
