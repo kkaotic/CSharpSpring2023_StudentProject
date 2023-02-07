@@ -51,7 +51,7 @@ namespace MyApp
                     }
                     else if (result == 7)
                     {
-                        courseHelper.ListCourses();
+                        courseHelper.ListAndSelect();
                     }else if (result == 8)
                     {
                         courseHelper.SearchCourses();

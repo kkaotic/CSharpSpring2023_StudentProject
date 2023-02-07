@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,6 +63,54 @@ namespace App.LearningMangement.Helpers
                 }
             }
 
+            Console.WriteLine("Add an Assignment to the course:");
+            bool keepAdding = true;
+            var assignments = new List<Assignment>();
+
+            while(keepAdding)
+            {
+                Assignment assignment = new Assignment();
+                Console.WriteLine("What is the Assignment name?");
+                var ass_name = Console.ReadLine();
+                Console.WriteLine("What is the Assignment Description?");
+                var desc = Console.ReadLine();
+                Console.WriteLine("How many points is the assignment worth?");
+                var points = Console.ReadLine();
+                Console.WriteLine("When is the Assignment Due?");
+                DateTime date;
+                bool dateFlag = false;
+                while(!dateFlag)
+                {
+                    if (DateTime.TryParse(Console.ReadLine(), out date))
+                    {
+                        assignment.DueDate = date;
+                        assignment.Description = desc;
+                        assignment.Name = ass_name;
+                        assignment.totalAvailablePoints = int.Parse(points ?? "0");
+                        dateFlag = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Incorrect Date Format, please try again:");
+                    }
+                }
+                assignments.Add(assignment);
+
+                Console.WriteLine("Would you like to quit adding assignments? ('Y' or 'N')");
+                var choice = "Y";
+                choice = Console.ReadLine() ?? string.Empty;
+
+                if (choice.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    keepAdding = false;
+                }
+                else
+                {
+                    keepAdding = true;
+                }
+
+            }
+
             bool isCreate = false;
             if (selectedCourse == null)
             {
@@ -76,8 +125,10 @@ namespace App.LearningMangement.Helpers
             selectedCourse.Description = description;
             selectedCourse.Roster = new List<Person>();
             selectedCourse.Roster.AddRange(roster);
+            selectedCourse.Assignments=new List<Assignment>();
+            selectedCourse.Assignments.AddRange(assignments);
 
-            if (isCreate)
+            if(isCreate)
             {
                 courseService.Add(selectedCourse);
             }
@@ -109,8 +160,31 @@ namespace App.LearningMangement.Helpers
         public void ListCourses()
         {
             courseService.Courses.ForEach(Console.WriteLine);
-
         }
+
+        public void ListAndSelect()
+        {
+            courseService.Courses.ForEach(Console.WriteLine);
+
+            Console.WriteLine("Which course would you like to select?");
+            var selectionStr = Console.ReadLine();
+
+            bool IsString(object value)
+            {
+                return value is string;
+            }
+
+            if (IsString(selectionStr ?? string.Empty))
+            {
+                var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code == selectionStr);
+                if (selectionStr != null)
+                {
+                    Console.WriteLine("Course Assignments:");
+                    selectedCourse?.Assignments.ForEach(Console.WriteLine);
+                }
+            }
+        }
+
         public void SearchCourses()
         {
             Console.WriteLine("Enter a course's name or description: ");
