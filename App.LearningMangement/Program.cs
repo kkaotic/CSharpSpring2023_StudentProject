@@ -1,14 +1,17 @@
 ﻿using System;
 using App.LearningMangement.Helpers;
 using Library.LearningManagement.Models;
+using Library.LearningManagement.Services;
+
 namespace MyApp
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            var studentHelper = new StudentHelper();
-            var courseHelper = new CourseHelper();
+            var studentService = new StudentService();
+            var studentHelper = new StudentHelper(studentService);
+            var courseHelper = new CourseHelper(studentService);
 
             bool cont = true;
 
