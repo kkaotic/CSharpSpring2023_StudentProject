@@ -11,7 +11,13 @@ namespace App.LearningMangement.Helpers
 {
     internal class StudentHelper
     {
-        private StudentService studentService = new StudentService();
+        private StudentService studentService;
+
+        public StudentHelper(StudentService service)
+        {
+            studentService = service;
+        }
+
         public void CreateStudentRecord(Person? selectedStudent = null)
         {
             Console.WriteLine("What is the ID of the student?");
