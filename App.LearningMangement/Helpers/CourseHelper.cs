@@ -13,12 +13,13 @@ namespace App.LearningMangement.Helpers
 {
     public class CourseHelper
     {
-        private CourseService courseService = new CourseService();
+        private CourseService courseService;
         private StudentService studentService;
 
         public CourseHelper(StudentService service)
         {
             studentService = service;
+            courseService = CourseService.Current;
 
         }
 
