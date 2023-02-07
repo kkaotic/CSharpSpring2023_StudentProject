@@ -41,21 +41,11 @@ namespace App.LearningMangement.Helpers
                 courseService.Add(selectedCourse);
             }
 
-            /*var course = new Course
-            {
-                Code = code,
-                Name = name,
-                Description = description
-
-            };
-
-            courseService.Add(course);
-            */
         }
 
         public void UpdateCourse()
         {
-            Console.WriteLine("Select a course to update");
+            Console.WriteLine("Select a course's code to update");
             ListCourses();
 
             var selectionStr = Console.ReadLine();
@@ -80,7 +70,13 @@ namespace App.LearningMangement.Helpers
             courseService.Courses.ForEach(Console.WriteLine);
 
         }
+        public void SearchCourses()
+        {
+            Console.WriteLine("Enter a course's name or description: ");
+            var query = Console.ReadLine() ?? string.Empty;
 
+            courseService.Search(query).ToList().ForEach(Console.WriteLine);
+        }
 
 
     }
