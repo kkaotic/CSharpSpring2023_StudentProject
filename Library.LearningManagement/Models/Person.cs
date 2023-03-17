@@ -5,19 +5,15 @@
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public Dictionary<int, double> Grades { get; set; } //A list of assignments, each have ID (key into dictionary, double is grade)
-
-        public PersonClassification Classification { get; set; }
 
         public Person()
         {
-            Name = string.Empty;    //set empty string instead of null
-            Grades = new Dictionary<int, double>();
+            Name = string.Empty;
         }
 
         public override string ToString()
         {
-            return $"[{Id}] {Name} - {Classification}";
+            return $"[{Id}] {Name}";
         }
 
     }
