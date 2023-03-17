@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace App.LearningMangement.Helpers
 {
@@ -20,13 +21,18 @@ namespace App.LearningMangement.Helpers
             courseService = CourseService.Current;
         }
 
-        public void CreateStudentRecord(Person? selectedStudent = null)
+        public void CreateStudentRecord(Student? selectedStudent = null)
         {
             Console.WriteLine("What is the ID of the student?");
             var id = Console.ReadLine();
             Console.WriteLine("What is the name of the student?");
             var name = Console.ReadLine();
-            Console.WriteLine("What is the classification of the student? [(F)reshman, S(O)phomore, (J)unior, (S)enior]");
+            Console.WriteLine("What is the classification of the student?");
+            Console.WriteLine("[F] Freshman " +
+                "[O] Sophomore " +
+                "[J] Junior " +
+                "[S] Senior ");
+
             var classification = Console.ReadLine() ?? string.Empty;
             PersonClassification classEnum = PersonClassification.Freshman;
 
@@ -47,7 +53,7 @@ namespace App.LearningMangement.Helpers
             if (selectedStudent == null)
             {
                 isCreate = true;
-                selectedStudent = new Person();
+                selectedStudent = new Student();
             }
 
 
@@ -56,7 +62,7 @@ namespace App.LearningMangement.Helpers
             selectedStudent.Name = name ?? string.Empty;
             selectedStudent.Classification = classEnum;
 
-            if(isCreate)
+            if (isCreate)
             {
                 studentService.Add(selectedStudent);
             }
@@ -73,7 +79,7 @@ namespace App.LearningMangement.Helpers
             if (int.TryParse(selectionStr, out int selectionInt))
             {
                 var selectedStudent = studentService.Students.FirstOrDefault(s => s.Id == selectionInt);
-                if(selectionStr != null)
+                if (selectionStr != null)
                 {
                     CreateStudentRecord(selectedStudent);
                 }
@@ -83,15 +89,18 @@ namespace App.LearningMangement.Helpers
         public void ListStudents()
         {
             studentService.Students.ForEach(Console.WriteLine);
+        }
+
+        public void ListAndInfo()
+        {
+            studentService.Students.ForEach(Console.WriteLine);
 
             Console.WriteLine("Which student would you like to select?");
             var selectionStr = Console.ReadLine();
             var selectionInt = int.Parse(selectionStr ?? "0");
 
-            Console.WriteLine("Student Course List:");
+            Console.WriteLine("Courses Student is Enrolled in:");
             courseService.Courses.Where(c => c.Roster.Any(s => s.Id == selectionInt)).ToList().ForEach(Console.WriteLine);
-
-
         }
 
         public void SearchStudents()
@@ -103,7 +112,8 @@ namespace App.LearningMangement.Helpers
             var selectionStr = Console.ReadLine();
             var selectionInt = int.Parse(selectionStr ?? "0");
 
-            Console.WriteLine("Student Course List:");
+            Console.WriteLine("Courses Student is Enrolled in:");
+
             courseService.Courses.Where(c => c.Roster.Any(s => s.Id == selectionInt)).ToList().ForEach(Console.WriteLine);
         }
     }
