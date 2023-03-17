@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Library.LearningManagement.Models
 {
-    internal class FileItem
+    public class FileItem : ContentItem
     {
+        public string? Path { get; set; }
     }
 }
