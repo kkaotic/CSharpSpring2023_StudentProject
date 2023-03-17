@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Library.LearningManagement.Models
 {
-    internal class PageItem
+    public class PageItem : ContentItem
     {
+        public string HtmlBody { get; set; }
+
     }
 }
