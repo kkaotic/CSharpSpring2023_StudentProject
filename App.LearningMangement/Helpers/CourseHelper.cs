@@ -77,6 +77,7 @@ namespace App.LearningMangement.Helpers
             {
                 SetupRoster(selectedCourse);
                 SetupAssignments(selectedCourse);
+                SetUpModules(selectedCourse);
             }
 
 
@@ -226,6 +227,18 @@ namespace App.LearningMangement.Helpers
             }
         }
 
+        public void AddModule()
+        {
+            Console.WriteLine("Enter the code for hte course to add the Module to:");
+            courseService.Courses.ForEach(Console.WriteLine);
+            var selection = Console.ReadLine();
+
+            var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code.Equals(selection));
+            if (selectedCourse != null) 
+            {
+                selectedCourse.Modules.Add(CreateModule(selectedCourse));
+            }
+        }
         private void SetupRoster(Course c)
         {
             Console.WriteLine("Which students should be enrolled in this course? ('Q' to Quit)");
@@ -305,6 +318,142 @@ namespace App.LearningMangement.Helpers
                 }
 
             }
+        }
+
+        private void SetUpModules(Course c)
+        {
+            Console.WriteLine("Would you like to add a Module? (Y/N)");
+            var modResponse = Console.ReadLine() ?? "N";
+            bool continueAdding;
+            if (modResponse.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
+            {
+                continueAdding = true;
+                while (continueAdding)
+                {
+                    c.Modules.Add(CreateModule(c));
+                    Console.WriteLine("Add more Modules? (Y/N)");
+                    modResponse = Console.ReadLine() ?? "N";
+                    if (modResponse.Equals("N", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        continueAdding = false;
+                    }
+                }
+            }
+        }
+        private Module CreateModule(Course c)
+        {
+            Console.WriteLine("Name:");
+            var modName = Console.ReadLine() ?? string.Empty;
+            Console.WriteLine("Description:");
+            var modDescription = Console.ReadLine() ?? string.Empty;
+
+            var module = new Module
+            {
+                Name = modName,
+                Description = modDescription
+            };
+            Console.WriteLine("Would you like to add Content? (Y/N)");
+            var choice = Console.ReadLine() ?? "N";
+            while(choice.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Console.WriteLine("What type of Content would you like to add?");
+                Console.WriteLine("[1] Assignment");
+                Console.WriteLine("[2] File");
+                Console.WriteLine("[3] Page");
+                var contentChoice = int.Parse(Console.ReadLine() ?? "0");
+
+                switch (contentChoice)
+                {
+                    case 1:
+                        var newAssignmentContent = CreateAssignmentItem(c);
+                        if(newAssignmentContent != null) 
+                        {
+                            module.Content.Add(newAssignmentContent);
+                        }
+                        module.Content.Add(CreateAssignmentItem(c));
+                        break;
+                    case 2:
+                        var newFileContent = CreateFileItem(c);
+                        if (newFileContent != null)
+                        {
+                            module.Content.Add(newFileContent);
+                        }
+                        module.Content.Add(CreateFileItem(c));
+                        break;
+                    case 3:
+                        var newPageContent = CreatePageItem(c);
+                        if (newPageContent != null)
+                        {
+                            module.Content.Add(newPageContent);
+                        }
+                        module.Content.Add(CreatePageItem(c));
+                        break;
+                    default:
+                        break;
+                }
+
+                Console.WriteLine("Would you like to add more Content? (Y/N)");
+                choice = Console.ReadLine() ?? "N";
+
+            }
+
+            return module;
+        }
+
+        private AssignmentItem? CreateAssignmentItem(Course c)
+        {
+            Console.WriteLine("Name:");
+            var name = Console.ReadLine() ?? string.Empty;
+            Console.WriteLine("Description:");
+            var description = Console.ReadLine() ?? string.Empty;
+
+            Console.WriteLine("Which Assignment should be added?");
+            c.Assignments.ForEach(Console.WriteLine);
+            var choice = Console.ReadLine();
+            var assignment = c.Assignments.FirstOrDefault(a => a.Name == choice);
+            return new AssignmentItem
+            { Assignment = assignment,
+                Name = name,
+                Description = description
+            };
+
+        }
+
+        private FileItem? CreateFileItem(Course c)
+        {
+            Console.WriteLine("Name:");
+            var name = Console.ReadLine() ?? string.Empty;
+            Console.WriteLine("Description:");
+            var description = Console.ReadLine() ?? string.Empty;
+
+            Console.WriteLine("Enter a path to the file:");
+            var filePath = Console.ReadLine();
+
+            return new FileItem 
+            { Path = filePath,
+              Name = name,
+              Description = description
+            };
+
+        }
+
+        private PageItem? CreatePageItem(Course c)
+        {
+            Console.WriteLine("Name:");
+            var name = Console.ReadLine() ?? string.Empty;
+            Console.WriteLine("Description:");
+            var description = Console.ReadLine() ?? string.Empty;
+
+            Console.WriteLine("Enter page content:");
+            var body = Console.ReadLine();
+
+            return new PageItem
+            {
+                HtmlBody = body,
+                Name = name,
+                Description = description
+            };
+
         }
 
     }
