@@ -20,7 +20,7 @@ namespace MyApp
 
             while (cont)
             {
-                Console.WriteLine("[1] Maintain Students");
+                Console.WriteLine("[1] Maintain People");
                 Console.WriteLine("[2] Maintain Courses");
                 Console.WriteLine("[3] Exit");                              //sys
                 var input = Console.ReadLine();
@@ -47,10 +47,10 @@ namespace MyApp
         static void ShowStudentMenu(StudentHelper studentHelper)
         {
             Console.WriteLine("Choose an action:");
-            Console.WriteLine("[1] Add a Student to Registry");         //Student
-            Console.WriteLine("[2] Update a Student in Registry");      //Student
-            Console.WriteLine("[3] List all registered Students");      //Student
-            Console.WriteLine("[4] Search for a Student");              //Student
+            Console.WriteLine("[1] Add a new Person");                  //Student
+            Console.WriteLine("[2] Update a Person in Registry");       //Student
+            Console.WriteLine("[3] List all People");                   //Student
+            Console.WriteLine("[4] Search for a Person");               //Student
 
             var input = Console.ReadLine();
             if (int.TryParse(input, out int result))
