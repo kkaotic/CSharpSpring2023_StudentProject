@@ -131,6 +131,9 @@ namespace App.LearningMangement.Helpers
                 var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code == selectionStr);
                 if (selectionStr != null)
                 {
+                    Console.WriteLine("Course Roster:");
+                    selectedCourse?.Roster.ForEach(Console.WriteLine);
+                    Console.WriteLine("");
                     Console.WriteLine("Course Assignments:");
                     selectedCourse?.Assignments.ForEach(Console.WriteLine);
                 }
@@ -143,6 +146,84 @@ namespace App.LearningMangement.Helpers
             var query = Console.ReadLine() ?? string.Empty;
 
             courseService.Search(query).ToList().ForEach(Console.WriteLine);
+        }
+
+        public void AddStudent()
+        {
+            Console.WriteLine("Select a course's code to update it's roster");
+            ListCourses();
+
+            var selectionStr = Console.ReadLine();
+
+            bool IsString(object value)
+            {
+                return value is string;
+            }
+
+            if (IsString(selectionStr ?? string.Empty))
+            {
+                var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code == selectionStr);
+                if (selectionStr != null)
+                {
+                    studentService.Students.Where(s => !selectedCourse.Roster.Any(s2 => s2.Id == s.Id)).ToList().ForEach(Console.WriteLine);
+                    if (studentService.Students.Any(s => !selectedCourse.Roster.Any(s2 => s2.Id == s.Id)))
+                    {
+                        selectionStr = Console.ReadLine() ?? string.Empty;
+                    }
+                    if(selectionStr != null)
+                    {
+                        var selectedId = int.Parse(selectionStr);
+                        var selectedStudent = studentService.Students.FirstOrDefault(s => s.Id == selectedId);
+                        if(selectedStudent != null) 
+                        {
+                            selectedCourse.Roster.Add(selectedStudent);
+
+                        }
+                    }
+
+                }
+            }
+        }
+
+        public void RemoveStudent()
+        {
+            Console.WriteLine("Select a course's code to update it's roster");
+            ListCourses();
+
+            var selectionStr = Console.ReadLine();
+
+            bool IsString(object value)
+            {
+                return value is string;
+            }
+
+            if (IsString(selectionStr ?? string.Empty))
+            {
+                var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code == selectionStr);
+                if (selectionStr != null)
+                {
+                    selectedCourse.Roster.ForEach(Console.WriteLine);
+                    if (selectedCourse.Roster.Any())
+                    {
+                        selectionStr = Console.ReadLine() ?? string.Empty;
+                    }
+                    else
+                    {
+                        selectionStr = null;
+                    }
+                    if (selectionStr != null)
+                    {
+                        var selectedId = int.Parse(selectionStr);
+                        var selectedStudent = studentService.Students.FirstOrDefault(s => s.Id == selectedId);
+                        if (selectedStudent != null)
+                        {
+                            selectedCourse.Roster.Remove(selectedStudent);
+
+                        }
+                    }
+
+                }
+            }
         }
 
         private void SetupRoster(Course c)
