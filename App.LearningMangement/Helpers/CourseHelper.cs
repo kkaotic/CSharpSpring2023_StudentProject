@@ -269,6 +269,28 @@ namespace App.LearningMangement.Helpers
             }
         }
 
+        public void RemoveModule()
+        {
+            Console.WriteLine("Enter the code for the course:");
+            courseService.Courses.ForEach(Console.WriteLine);
+            var selection = Console.ReadLine();
+
+            var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code.Equals(selection));
+            if (selection != null)
+            {
+                Console.WriteLine("Choose an Module to remove:");
+
+                selectedCourse.Modules.ForEach(Console.WriteLine);
+                var selectionStr = Console.ReadLine() ?? string.Empty;
+                var selectionInt = int.Parse(selectionStr);
+                var selectedModule = selectedCourse.Modules.FirstOrDefault(m => m.Id == selectionInt);
+                if (selectedModule != null)
+                {
+                    selectedCourse.Modules.Remove(selectedModule);
+                }
+            }
+        }
+
         private void SetupRoster(Course c)
         {
             Console.WriteLine("Which students should be enrolled in this course? ('Q' to Quit)");
