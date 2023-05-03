@@ -129,7 +129,7 @@ namespace App.LearningMangement.Helpers
 
             if (IsString(selectionStr ?? string.Empty))
             {
-                var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code == selectionStr);
+                var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code.Equals(selectionStr, StringComparison.InvariantCultureIgnoreCase));
                 if (selectionStr != null)
                 {
                     Console.WriteLine(selectedCourse.DetailDisplay);
