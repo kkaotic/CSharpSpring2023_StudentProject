@@ -54,10 +54,6 @@ namespace App.LearningMangement.Helpers
                 }
                 
             }
-
-
-            //Console.WriteLine("What is the ID of the student?");
-            //var id = Console.ReadLine();
             Console.WriteLine("What is the name of the student?");
             var name = Console.ReadLine();
             if (selectedStudent is Student)
