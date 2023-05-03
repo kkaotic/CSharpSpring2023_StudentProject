@@ -40,8 +40,8 @@ namespace App.LearningMangement.Helpers
             }
             if (choice.Equals("Y", StringComparison.InvariantCultureIgnoreCase)) 
             {
-                Console.WriteLine("What is the code of the course?");
-                selectedCourse.Code = Console.ReadLine() ?? string.Empty;
+                Console.WriteLine("What is the prefix of the course?");
+                selectedCourse.Prefix = Console.ReadLine() ?? string.Empty;
             }
 
             if (!isCreate)
@@ -137,12 +137,25 @@ namespace App.LearningMangement.Helpers
             }
         }
 
-        public void SearchCourses()
+        public void SearchCourses(string? query = null)
         {
-            Console.WriteLine("Enter a course's name or description: ");
-            var query = Console.ReadLine() ?? string.Empty;
+            if(string.IsNullOrEmpty(query))
+            {
+                courseService.Courses.ForEach(Console.WriteLine);
+            }
+            else
+            {
+                courseService.Search(query).ToList().ForEach(Console.WriteLine);
+            }
 
-            courseService.Search(query).ToList().ForEach(Console.WriteLine);
+            Console.WriteLine("Enter a course's name or description: ");
+            var code = Console.ReadLine() ?? string.Empty;
+            
+            var selectedCourse = courseService.Courses.FirstOrDefault(c => c.Code.Equals(code, StringComparison.InvariantCultureIgnoreCase));
+            if (selectedCourse != null) 
+            {
+                Console.WriteLine(selectedCourse.DetailDisplay);
+            }
         }
 
         public void AddStudent()
