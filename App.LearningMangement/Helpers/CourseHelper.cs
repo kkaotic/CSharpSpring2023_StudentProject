@@ -291,6 +291,109 @@ namespace App.LearningMangement.Helpers
             }
         }
 
+        public void UpdateModule()
+        {
+            Console.WriteLine("Enter the code for the course:");
+            courseService.Courses.ForEach(Console.WriteLine);
+            var selection = Console.ReadLine();
+
+            Console.WriteLine("Enter the ID of the Module to update:");
+            var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code.Equals(selection));
+
+            if(selectedCourse != null && selectedCourse.Modules.Any())
+            {
+                selectedCourse.Modules.ForEach(Console.WriteLine);
+
+                selection = Console.ReadLine();
+                var selectedModule = selectedCourse.Modules.FirstOrDefault(m => m.Id.ToString().Equals(selection, StringComparison.InvariantCultureIgnoreCase));
+
+                if(selectedModule != null)
+                {
+                    Console.WriteLine("Would you like to change the Module Name? (Y/N)");
+                    selection = Console.ReadLine();
+                    if (selection?.Equals("Y", StringComparison.InvariantCultureIgnoreCase) ?? false)
+                    {
+                        Console.WriteLine("Name:");
+                        selectedModule.Name = Console.ReadLine();
+                    }
+                    Console.WriteLine("Would you like to change the Module Description? (Y/N)");
+                    selection = Console.ReadLine();
+                    if (selection?.Equals("Y", StringComparison.InvariantCultureIgnoreCase) ?? false)
+                    {
+                        Console.WriteLine("Description:");
+                        selectedModule.Description = Console.ReadLine();
+                    }
+                    Console.WriteLine("Would you like to delete content from this module?");
+                    selection = Console.ReadLine();
+                    if (selection?.Equals("Y", StringComparison.InvariantCultureIgnoreCase) ?? false)
+                    {
+                        var keepRemoving = true;
+                        while(keepRemoving)
+                        {
+                            selectedModule.Content.ForEach(Console.WriteLine);
+                            selection = Console.ReadLine();
+
+
+                            var contentToRemove = selectedModule.Content.FirstOrDefault(c => c.Id.ToString().Equals(selection, StringComparison.InvariantCultureIgnoreCase));
+                            if (contentToRemove != null)
+                            {
+                                selectedModule.Content.Remove(contentToRemove);
+                            }
+
+                            Console.WriteLine("Would you like to keep removing content? (Y/N)");
+                            selection = Console.ReadLine();
+                            if(selection?.Equals("N", StringComparison.InvariantCultureIgnoreCase) ?? false)
+                            {
+                                keepRemoving = false;
+                            }
+                        }
+
+                    }
+                    Console.WriteLine("Would you like to add Content? (Y/N)");
+                    var choice = Console.ReadLine() ?? "N";
+                    while (choice.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        Console.WriteLine("What type of Content would you like to add?");
+                        Console.WriteLine("[1] Assignment");
+                        Console.WriteLine("[2] File");
+                        Console.WriteLine("[3] Page");
+                        var contentChoice = int.Parse(Console.ReadLine() ?? "0");
+
+                        switch (contentChoice)
+                        {
+                            case 1:
+                                var newAssignmentContent = CreateAssignmentItem(selectedCourse);
+                                if (newAssignmentContent != null)
+                                {
+                                    selectedModule.Content.Add(newAssignmentContent);
+                                }
+                                break;
+                            case 2:
+                                var newFileContent = CreateFileItem(selectedCourse);
+                                if (newFileContent != null)
+                                {
+                                    selectedModule.Content.Add(newFileContent);
+                                }
+                                break;
+                            case 3:
+                                var newPageContent = CreatePageItem(selectedCourse);
+                                if (newPageContent != null)
+                                {
+                                    selectedModule.Content.Add(newPageContent);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+
+                        Console.WriteLine("Would you like to add more Content? (Y/N)");
+                        choice = Console.ReadLine() ?? "N";
+
+                    }
+                }
+            }
+        }
+
         private void SetupRoster(Course c)
         {
             Console.WriteLine("Which students should be enrolled in this course? ('Q' to Quit)");
@@ -417,6 +520,7 @@ namespace App.LearningMangement.Helpers
                 }
             }
         }
+
         private Module CreateModule(Course c)
         {
             Console.WriteLine("Name:");

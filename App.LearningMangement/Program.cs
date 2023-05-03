@@ -85,8 +85,9 @@ namespace MyApp
             Console.WriteLine("[7] Remove a student from a Course");    //Course
             Console.WriteLine("[8] Add a Module to a Course");          //Course
             Console.WriteLine("[9] Remove a Module from a Course");
-            Console.WriteLine("[10] List all Courses");                  //Course
-            Console.WriteLine("[11] Search for a Course");               //Course
+            Console.WriteLine("[10] Update a Module");
+            Console.WriteLine("[11] List all Courses");                  //Course
+            Console.WriteLine("[12] Search for a Course");               //Course
 
             var input = Console.ReadLine();
             if (int.TryParse(input, out int result))
@@ -129,9 +130,13 @@ namespace MyApp
                 }
                 else if (result == 10)
                 {
-                    courseHelper.ListAndSelect();
+                    courseHelper.UpdateModule();
                 }
                 else if (result == 11)
+                {
+                    courseHelper.ListAndSelect();
+                }
+                else if (result == 12)
                 {
                     courseHelper.SearchCourses();
                 }
