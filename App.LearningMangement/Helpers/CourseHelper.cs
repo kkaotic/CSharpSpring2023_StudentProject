@@ -132,11 +132,7 @@ namespace App.LearningMangement.Helpers
                 var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code == selectionStr);
                 if (selectionStr != null)
                 {
-                    Console.WriteLine("Course Roster:");
-                    selectedCourse?.Roster.ForEach(Console.WriteLine);
-                    Console.WriteLine("");
-                    Console.WriteLine("Course Assignments:");
-                    selectedCourse?.Assignments.ForEach(Console.WriteLine);
+                    Console.WriteLine(selectedCourse.DetailDisplay);
                 }
             }
         }
@@ -227,9 +223,42 @@ namespace App.LearningMangement.Helpers
             }
         }
 
+        private Assignment CreateAssignment()
+        {
+            Console.Write("Name: ");
+            var assignmentName = Console.ReadLine() ?? string.Empty;
+            Console.WriteLine("Description: ");
+            var assignmentDesc = Console.ReadLine() ?? string.Empty;
+            Console.WriteLine("Total Points: ");
+            var totalPoints = decimal.Parse(Console.ReadLine() ?? "100");
+            Console.WriteLine("Due Date: ");
+            var dueDate = DateTime.Parse(Console.ReadLine() ?? "01/01/1900");
+
+            return new Assignment
+            {
+                Name = assignmentName,
+                Description = assignmentDesc,
+                totalAvailablePoints = totalPoints,
+                DueDate = dueDate
+            };
+        }
+
+        public void AddAssignment()
+        {
+            Console.WriteLine("Enter the code for the course to add the assignment to:");
+            courseService.Courses.ForEach(Console.WriteLine);
+            var selection = Console.ReadLine();
+
+            var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code.Equals(selection));
+            if (selection != null) 
+            {
+                selectedCourse.Assignments.Add(CreateAssignment());
+            }
+        }
+
         public void AddModule()
         {
-            Console.WriteLine("Enter the code for hte course to add the Module to:");
+            Console.WriteLine("Enter the code for the course to add the Module to:");
             courseService.Courses.ForEach(Console.WriteLine);
             var selection = Console.ReadLine();
 
@@ -239,6 +268,7 @@ namespace App.LearningMangement.Helpers
                 selectedCourse.Modules.Add(CreateModule(selectedCourse));
             }
         }
+
         private void SetupRoster(Course c)
         {
             Console.WriteLine("Which students should be enrolled in this course? ('Q' to Quit)");
@@ -273,50 +303,75 @@ namespace App.LearningMangement.Helpers
 
         private void SetupAssignments(Course c)
         {
-            Console.WriteLine("Add an Assignment to the course:");
-            bool keepAdding = true;
-            while (keepAdding)
+            Console.WriteLine("Would you like to add assignments? (Y/N)");
+            bool continueAdding = true;
+            var assignResponse = Console.ReadLine() ?? "N";
+
+            if (assignResponse.Equals("Y", StringComparison.InvariantCultureIgnoreCase)) 
             {
-                Assignment assignment = new Assignment();
-                Console.WriteLine("What is the Assignment name?");
-                var ass_name = Console.ReadLine();
-                Console.WriteLine("What is the Assignment Description?");
-                var desc = Console.ReadLine();
-                Console.WriteLine("How many points is the assignment worth?");
-                var points = Console.ReadLine();
-                Console.WriteLine("When is the Assignment Due?");
-                DateTime date;
-                bool dateFlag = false;
-                while (!dateFlag)
+                Console.WriteLine("Add an Assignment to the course:");
+                while (continueAdding)
                 {
-                    if (DateTime.TryParse(Console.ReadLine(), out date))
+                    c.Assignments.Add(CreateAssignment());
+
+                    Console.WriteLine("Would you like to keep adding assignments? ('Y' or 'N')");
+                    var opt = Console.ReadLine() ?? "N";
+                    if (opt.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        assignment.DueDate = date;
-                        assignment.Description = desc;
-                        assignment.Name = ass_name;
-                        assignment.totalAvailablePoints = int.Parse(points ?? "0");
-                        dateFlag = true;
+                        continueAdding = true;
                     }
                     else
                     {
-                        Console.WriteLine("Incorrect Date Format, please try again:");
+                        continueAdding = false;
                     }
+
                 }
-                c.Assignments.Add(assignment);
+            }
+        }
 
-                Console.WriteLine("Would you like to quit adding assignments? ('Y' or 'N')");
-                var opt = "Y";
-                opt = Console.ReadLine() ?? string.Empty;
+        public void UpdateAssignment()
+        {
+            Console.WriteLine("Enter the code for the course:");
+            courseService.Courses.ForEach(Console.WriteLine);
+            var selection = Console.ReadLine();
 
-                if (opt.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
+            var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code.Equals(selection));
+            if (selection != null)
+            {
+                Console.WriteLine("Choose an assignment to update:");
+
+                selectedCourse.Assignments.ForEach(Console.WriteLine);
+                var selectionStr = Console.ReadLine() ?? string.Empty;
+                var selectionInt = int.Parse(selectionStr);
+                var selectedAssignment = selectedCourse.Assignments.FirstOrDefault(a => a.Id == selectionInt);
+                if (selectedAssignment != null)
                 {
-                    keepAdding = false;
+                    var index = selectedCourse.Assignments.IndexOf(selectedAssignment);
+                    selectedCourse.Assignments.RemoveAt(index);
+                    selectedCourse.Assignments.Insert(index, CreateAssignment());
                 }
-                else
-                {
-                    keepAdding = true;
-                }
+            }
+        }
 
+        public void RemoveAssignment()
+        {
+            Console.WriteLine("Enter the code for the course:");
+            courseService.Courses.ForEach(Console.WriteLine);
+            var selection = Console.ReadLine();
+
+            var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code.Equals(selection));
+            if (selection != null)
+            {
+                Console.WriteLine("Choose an assignment to remove:");
+
+                selectedCourse.Assignments.ForEach(Console.WriteLine);
+                var selectionStr = Console.ReadLine() ?? string.Empty;
+                var selectionInt = int.Parse(selectionStr);
+                var selectedAssignment = selectedCourse.Assignments.FirstOrDefault(a => a.Id == selectionInt);
+                if (selectedAssignment != null)
+                {
+                    selectedCourse.Assignments.Remove(selectedAssignment);
+                }
             }
         }
 
@@ -370,7 +425,7 @@ namespace App.LearningMangement.Helpers
                         {
                             module.Content.Add(newAssignmentContent);
                         }
-                        module.Content.Add(CreateAssignmentItem(c));
+                        //module.Content.Add(CreateAssignmentItem(c));
                         break;
                     case 2:
                         var newFileContent = CreateFileItem(c);
@@ -378,7 +433,7 @@ namespace App.LearningMangement.Helpers
                         {
                             module.Content.Add(newFileContent);
                         }
-                        module.Content.Add(CreateFileItem(c));
+                        //module.Content.Add(CreateFileItem(c));
                         break;
                     case 3:
                         var newPageContent = CreatePageItem(c);
@@ -386,7 +441,7 @@ namespace App.LearningMangement.Helpers
                         {
                             module.Content.Add(newPageContent);
                         }
-                        module.Content.Add(CreatePageItem(c));
+                       // module.Content.Add(CreatePageItem(c));
                         break;
                     default:
                         break;
@@ -402,21 +457,16 @@ namespace App.LearningMangement.Helpers
 
         private AssignmentItem? CreateAssignmentItem(Course c)
         {
-            Console.WriteLine("Name:");
-            var name = Console.ReadLine() ?? string.Empty;
-            Console.WriteLine("Description:");
-            var description = Console.ReadLine() ?? string.Empty;
-
             Console.WriteLine("Which Assignment should be added?");
             c.Assignments.ForEach(Console.WriteLine);
-            var choice = Console.ReadLine();
-            var assignment = c.Assignments.FirstOrDefault(a => a.Name == choice);
-            return new AssignmentItem
-            { Assignment = assignment,
-                Name = name,
-                Description = description
-            };
+            var choice = int.Parse(Console.ReadLine() ?? "-1");
 
+            if (choice >= 0)
+            {
+                var assignment = c.Assignments.FirstOrDefault(a => a.Id == choice);
+                return new AssignmentItem { Assignment = assignment };
+            }
+            return null;
         }
 
         private FileItem? CreateFileItem(Course c)
