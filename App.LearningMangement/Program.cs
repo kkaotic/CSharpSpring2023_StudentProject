@@ -79,10 +79,13 @@ namespace MyApp
             Console.WriteLine("[1] Create a new Course");               //Course
             Console.WriteLine("[2] Update a Course");                   //Course
             Console.WriteLine("[3] Add a student to a Course");         //Course
-            Console.WriteLine("[4] Remove a student from a Course");    //Course
-            Console.WriteLine("[5] Add a Module to a Course");          //Course
-            Console.WriteLine("[6] List all Courses");                  //Course
-            Console.WriteLine("[7] Search for a Course");               //Course
+            Console.WriteLine("[4] Add an Assignment");
+            Console.WriteLine("[5] Remove an Assignment");
+            Console.WriteLine("[6] Update an Assignment");
+            Console.WriteLine("[7] Remove a student from a Course");    //Course
+            Console.WriteLine("[8] Add a Module to a Course");          //Course
+            Console.WriteLine("[9] List all Courses");                  //Course
+            Console.WriteLine("[10] Search for a Course");               //Course
 
             var input = Console.ReadLine();
             if (int.TryParse(input, out int result))
@@ -101,17 +104,29 @@ namespace MyApp
                 }
                 else if (result == 4)
                 {
-                    courseHelper.RemoveStudent();
+                    courseHelper.AddAssignment();
                 }
                 else if (result == 5)
                 {
-                    courseHelper.AddModule();
+                    courseHelper.RemoveAssignment();
                 }
                 else if (result == 6)
                 {
-                    courseHelper.ListAndSelect();
+                    courseHelper.UpdateAssignment();
                 }
                 else if (result == 7)
+                {
+                    courseHelper.RemoveStudent();
+                }
+                else if (result == 8)
+                {
+                    courseHelper.AddModule();
+                }
+                else if (result == 9)
+                {
+                    courseHelper.ListAndSelect();
+                }
+                else if (result == 10)
                 {
                     courseHelper.SearchCourses();
                 }
