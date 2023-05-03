@@ -282,6 +282,65 @@ namespace App.LearningMangement.Helpers
             }
         }
 
+        public void AddAnnouncement()
+        {
+            Console.WriteLine("Enter the code for the course to add the announcement to:");
+            courseService.Courses.ForEach(Console.WriteLine);
+            var selection = Console.ReadLine();
+
+            var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code.Equals(selection, StringComparison.InvariantCultureIgnoreCase));
+            if (selection != null)
+            {
+                selectedCourse.Announcements.Add(CreateAnnouncement(selectedCourse));
+            }
+        }
+
+        public void DeleteAnnouncement()
+        {
+            Console.WriteLine("Enter the code for the course to delete the announcement from:");
+            courseService.Courses.ForEach(Console.WriteLine);
+            var selection = Console.ReadLine();
+
+            var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code.Equals(selection, StringComparison.InvariantCultureIgnoreCase));
+            if (selection != null)
+            {
+                Console.WriteLine("Choose an Announcement to be deleted:");
+                selectedCourse.Announcements.ForEach(Console.WriteLine);
+                var selectionStr = Console.ReadLine() ?? string.Empty;
+                var selectionInt = int.Parse(selectionStr);
+                var selectedAnnouncement = selectedCourse.Announcements.FirstOrDefault(a => a.Id == selectionInt);
+                if (selectedAnnouncement != null)
+                {
+                    selectedCourse.Announcements.Remove(selectedAnnouncement);
+                }
+            }
+        }
+
+        public void UpdateAnnouncement()
+        {
+            Console.WriteLine("Enter the code for the course:");
+            courseService.Courses.ForEach(Console.WriteLine);
+            var selection = Console.ReadLine();
+
+            var selectedCourse = courseService.Courses.FirstOrDefault(s => s.Code.Equals(selection, StringComparison.InvariantCultureIgnoreCase));
+            if (selection != null)
+            {
+                Console.WriteLine("Choose an Announcement to update:");
+                selectedCourse.Announcements.ForEach(Console.WriteLine);
+                var selectionStr = Console.ReadLine() ?? string.Empty;
+                var selectionInt = int.Parse(selectionStr);
+                var selectedAnnouncement = selectedCourse.Announcements.FirstOrDefault(a => a.Id == selectionInt);
+                if (selectedAnnouncement != null)
+                {
+                    Console.WriteLine("Name:");
+                    selectedAnnouncement.Name = Console.ReadLine();
+
+                    Console.WriteLine("Description:");
+                    selectedAnnouncement.Description = Console.ReadLine();
+                }
+            }
+        }
+
         public void RemoveModule()
         {
             Console.WriteLine("Enter the code for the course:");
@@ -592,6 +651,21 @@ namespace App.LearningMangement.Helpers
             }
 
             return module;
+        }
+
+        private Announcement CreateAnnouncement(Course c)
+        {
+            Console.WriteLine("enter the name of the announcement:");
+            var name = Console.ReadLine();
+            Console.WriteLine("enter the description of the announcement");
+            var description = Console.ReadLine();
+
+            return new Announcement
+            {
+                Name = name,
+                Description = description
+            };
+
         }
 
         private AssignmentItem? CreateAssignmentItem(Course c)
