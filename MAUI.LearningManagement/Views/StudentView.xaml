@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.LearningManagement.Views.StudentView"
+             Title="StudentView"
+             BackgroundImageSource="C:\Users\kaleb\source\repos\CSharpSpring2023_StudentProject\MAUI.LearningManagement\Resources\Images\background.jpg">
+    <VerticalStackLayout>
+        <Label 
+            FontSize="Medium"
+            Text="STUDENT VIEW"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Label
+            FontSize="Small"
+            Text="Courses Enrolled In"
+            VerticalOptions="Center"
+            HorizontalOptions="CenterAndExpand"
+            />
+
+        <Button
+            BackgroundColor="BlanchedAlmond"
+            FontSize="Subtitle"
+            TextColor="Black"
+            Text="Cancel"
+            Clicked="CancelClicked"
+            WidthRequest="225"
+            HeightRequest="125"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            />
+    </VerticalStackLayout>
+</ContentPage>

@@ -9,7 +9,7 @@ namespace Library.LearningManagement.Models
     public class ContentItem
     {
         private static int lastId = 0;
-        private int id = 0;
+
         public int Id
         {
             get; private set;
@@ -26,6 +26,5 @@ namespace Library.LearningManagement.Models
         {
             Id = ++lastId;
         }
-
     }
 }

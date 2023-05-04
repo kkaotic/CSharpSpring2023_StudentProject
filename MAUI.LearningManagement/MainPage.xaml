@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.LearningManagement.MainPage"
+             Title="Learning Management System V0.1"
+             BackgroundImageSource="C:\Users\kaleb\source\repos\CSharpSpring2023_StudentProject\MAUI.LearningManagement\Resources\Images\background.jpg">
+
+
+    <ScrollView>
+        <HorizontalStackLayout
+            Spacing="75"
+            Margin="10"
+            HorizontalOptions="Center"
+            >
+            <Button
+                BackgroundColor="BlanchedAlmond"
+                FontSize="Subtitle"
+                TextColor="Black"
+                Text="Student View"
+                Clicked="StudentClicked"
+                WidthRequest="225"
+                HeightRequest="125"
+                ></Button>
+            <Button
+                BackgroundColor="BlanchedAlmond"
+                FontSize="Subtitle"
+                TextColor="Black"
+                Text="Instructor View"
+                Clicked="InstructorClicked"
+                WidthRequest="225"
+                HeightRequest="125"></Button>
+        </HorizontalStackLayout>
+    </ScrollView>
+
+</ContentPage>

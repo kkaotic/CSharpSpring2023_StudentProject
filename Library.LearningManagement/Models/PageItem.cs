@@ -8,8 +8,7 @@ namespace Library.LearningManagement.Models
 {
     public class PageItem : ContentItem
     {
-        public string HtmlBody { get; set; }
+        public string? HtmlBody { get; set; }
 
     }
 }
-

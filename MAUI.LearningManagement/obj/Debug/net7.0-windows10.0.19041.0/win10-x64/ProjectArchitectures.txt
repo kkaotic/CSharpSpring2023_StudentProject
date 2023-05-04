@@ -1,0 +1,1 @@
+C:\Users\kaleb\source\repos\CSharpSpring2023_StudentProject\MAUI.LearningManagement\MAUI.LearningManagement.csproj;x64

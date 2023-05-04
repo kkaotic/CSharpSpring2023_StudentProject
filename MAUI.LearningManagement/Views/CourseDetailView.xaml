@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.LearningManagement.Views.CourseDetailView"
+             Title="CourseDetailView"
+             BackgroundImageSource="C:\Users\kaleb\source\repos\CSharpSpring2023_StudentProject\MAUI.LearningManagement\Resources\Images\background.jpg">
+
+    <VerticalStackLayout>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label 
+                Text="Prefix"
+                FontSize="Micro"
+                VerticalOptions="Center" 
+                HorizontalOptions="Start" 
+                Grid.Row="0"
+                Grid.Column="0"
+                />
+            <Entry 
+                Background="White"
+                Text="{Binding Path=Prefix, Mode=TwoWay}"
+                Grid.Row="1"
+                Grid.Column="0"
+                ></Entry>
+            <Label 
+                Text="Name"
+                FontSize="Micro"
+                VerticalOptions="Center" 
+                HorizontalOptions="Start" 
+                Grid.Row="0"
+                Grid.Column="1"/>
+            <Entry 
+                Background="White"
+                Text="{Binding Path=Name, Mode=TwoWay}"
+                Grid.Row="1"
+                Grid.Column="1"></Entry>
+            
+        </Grid>
+        
+
+        <Label 
+            Text="Description"
+            FontSize="Micro"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry Background="White"
+               Text="{Binding Path=Description, Mode=TwoWay}"></Entry>
+
+        <!--STUDENT ROSTER-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Text="Not Enrolled" Grid.Column="0"></Label>
+            <Label Text="Buttons" Grid.Column="1"></Label>
+            <Label Text="Enrolled" Grid.Column="2"></Label>
+        </Grid>
+
+        <HorizontalStackLayout HorizontalOptions="Center" Margin="150" Spacing="50">
+            <Button Text="Ok"
+                Clicked="OkClicked"
+                BackgroundColor="BlanchedAlmond"
+                FontSize="Subtitle"
+                TextColor="Black"
+                WidthRequest="225"
+                HeightRequest="125"
+                />
+            <Button Text="Cancel"
+                Clicked="CancelClicked"
+                BackgroundColor="BlanchedAlmond"
+                FontSize="Subtitle"
+                TextColor="Black"
+                WidthRequest="225"
+                HeightRequest="125"
+                />
+        </HorizontalStackLayout>
+        
+    </VerticalStackLayout>
+</ContentPage>

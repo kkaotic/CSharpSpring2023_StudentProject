@@ -25,15 +25,15 @@ namespace Library.LearningManagement.Models
         public string? Name { get; set; }
         public string? Description { get; set; }
         public List<ContentItem> Content { get; set; }
-        public Module() 
-        {
-            Content = new List<ContentItem>();
+
+        public Module() { 
+            Content= new List<ContentItem>();
         }
 
         public override string ToString()
         {
-            return $"{Id}. {Name} - {Description}" +
-                $"{string.Join("\n", Content.Select(c => c.ToString()).ToArray())}";
+            return $"{Name}: {Description}\n" +
+                $"{string.Join("\n\t", Content.Select(c => c.ToString()).ToArray())}";
         }
     }
 }

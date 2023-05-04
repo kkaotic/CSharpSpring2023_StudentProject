@@ -3,12 +3,13 @@
     public class Person
     {
         private static int lastId = 0;
+
         public int Id
         {
             get; private set;
         }
-        public string Name { get; set; }
 
+        public string Name { get; set; }
 
         public Person()
         {
@@ -20,8 +21,5 @@
         {
             return $"[{Id}] {Name}";
         }
-
     }
-
-
 }
